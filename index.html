@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wimer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Pacifico&family=Dancing+Script:wght@400;600;700&family=Playfair+Display:wght@400;600;700;900&family=Lato:wght@300;400;700&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* WoodenFloor Background */
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(90deg, rgba(101, 67, 33, 0.1) 1px, transparent 1px),
+                linear-gradient(rgba(101, 67, 33, 0.1) 1px, transparent 1px),
+                repeating-linear-gradient(0deg,
+                    #8B4513 0px,
+                    #A0522D 2px,
+                    #8B4513 4px,
+                    #6B4423 6px,
+                    #8B4513 8px,
+                    #A0522D 10px,
+                    #8B4513 12px),
+                linear-gradient(90deg,
+                    #654321 0%,
+                    #8B4513 20%,
+                    #A0522D 40%,
+                    #8B4513 60%,
+                    #654321 80%,
+                    #6B4423 100%);
+            background-size:
+                100px 100px,
+                100px 100px,
+                100% 200px,
+                100% 100%;
+            background-position:
+                0 0,
+                0 0,
+                0 0,
+                0 0;
+            animation: woodGrain 20s linear infinite;
+            z-index: -2;
+        }
+
+        /* Wood texture overlay */
+        .background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                repeating-linear-gradient(90deg,
+                    transparent,
+                    transparent 50px,
+                    rgba(0, 0, 0, 0.05) 50px,
+                    rgba(0, 0, 0, 0.05) 51px),
+                repeating-linear-gradient(0deg,
+                    rgba(139, 69, 19, 0.3) 0px,
+                    rgba(160, 82, 45, 0.3) 3px,
+                    rgba(139, 69, 19, 0.3) 6px);
+            opacity: 0.6;
+        }
+
+        /* Wood planks effect */
+        .background::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(0deg,
+                    transparent 0%,
+                    transparent 19%,
+                    rgba(0, 0, 0, 0.2) 19.5%,
+                    rgba(0, 0, 0, 0.2) 20%,
+                    transparent 20%,
+                    transparent 39%,
+                    rgba(0, 0, 0, 0.2) 39.5%,
+                    rgba(0, 0, 0, 0.2) 40%,
+                    transparent 40%,
+                    transparent 59%,
+                    rgba(0, 0, 0, 0.2) 59.5%,
+                    rgba(0, 0, 0, 0.2) 60%,
+                    transparent 60%,
+                    transparent 79%,
+                    rgba(0, 0, 0, 0.2) 79.5%,
+                    rgba(0, 0, 0, 0.2) 80%,
+                    transparent 80%);
+            background-size: 100% 200px;
+        }
+
+        @keyframes woodGrain {
+            0% {
+                filter: brightness(1) contrast(1.1);
+            }
+
+            50% {
+                filter: brightness(1.05) contrast(1.15);
+            }
+
+            100% {
+                filter: brightness(1) contrast(1.1);
+            }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 223, 186, 0.4);
+            border-radius: 50%;
+            animation: float 15s infinite;
+            box-shadow: 0 0 10px rgba(255, 223, 186, 0.3);
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100vh) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        /* Container */
+        .container {
+            width: 90%;
+            max-width: 900px;
+            padding: 40px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Main Headings */
+        .main-heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .main-heading h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 4.5rem;
+            color: #FFF8DC;
+            text-shadow:
+                3px 3px 0px rgba(139, 69, 19, 0.4),
+                5px 5px 10px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(255, 223, 186, 0.2);
+            letter-spacing: 3px;
+            animation: headingGlow 3s ease-in-out infinite alternate;
+            position: relative;
+            display: inline-block;
+        }
+
+        .main-heading h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #FFD700, transparent);
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        @keyframes headingGlow {
+            from {
+                filter: drop-shadow(0 0 5px rgba(255, 223, 186, 0.3));
+            }
+
+            to {
+                filter: drop-shadow(0 0 15px rgba(255, 223, 186, 0.6));
+            }
+        }
+
+        /* The title */
+        .title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .title input[type="text"] {
+            background: rgba(255, 248, 240, 0.9);
+            border: 2px solid #8B4513;
+            border-radius: 5px;
+            padding: 10px 20px;
+            color: #3E2723;
+            font-size: 1.2rem;
+            font-family: 'Dancing Script', cursive;
+            font-weight: 600;
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            transition: all 0.3s ease;
+            box-shadow:
+                inset 0 2px 5px rgba(0, 0, 0, 0.1),
+                0 4px 10px rgba(139, 69, 19, 0.2);
+        }
+
+        .title input[type="text"]:focus {
+            outline: none;
+            border-color: #6B4423;
+            box-shadow:
+                inset 0 2px 5px rgba(0, 0, 0, 0.15),
+                0 0 20px rgba(139, 69, 19, 0.3);
+        }
+
+        .title input[type="text"]::placeholder {
+            color: rgba(62, 39, 35, 0.5);
+        }
+
+        /* Input Section */
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        input[type="datetime-local"] {
+            background: rgba(255, 248, 240, 0.9);
+            border: 2px solid #8B4513;
+            border-radius: 5px;
+            padding: 15px 25px;
+            color: #3E2723;
+            font-size: 1.1rem;
+            font-family: 'Lato', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow:
+                inset 0 2px 5px rgba(0, 0, 0, 0.1),
+                0 4px 10px rgba(139, 69, 19, 0.2);
+        }
+
+        input[type="datetime-local"]:focus {
+            outline: none;
+            border-color: #6B4423;
+            box-shadow:
+                inset 0 2px 5px rgba(0, 0, 0, 0.15),
+                0 0 20px rgba(139, 69, 19, 0.3);
+        }
+
+        input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            filter: sepia(1) hue-rotate(-30deg) saturate(2);
+        }
+
+        button {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            border: 2px solid #6B4423;
+            border-radius: 3px;
+            padding: 15px 40px;
+            color: #FFF8DC;
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'Lato', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow:
+                0 5px 15px rgba(62, 39, 35, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow:
+                0 10px 25px rgba(62, 39, 35, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            background: linear-gradient(135deg, #A0522D 0%, #8B4513 100%);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Reset Button */
+        .reset-btn {
+            background: linear-gradient(135deg, #DC143C 0%, #B22222 100%);
+            border: 2px solid #8B0000;
+            margin-left: 10px;
+        }
+
+        .reset-btn:hover {
+            background: linear-gradient(135deg, #FF1744 0%, #DC143C 100%);
+            box-shadow:
+                0 10px 25px rgba(220, 20, 60, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        /* Save Button */
+        .save-btn {
+            background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+            border: 2px solid #1B5E20;
+        }
+
+        .save-btn:hover {
+            background: linear-gradient(135deg, #43A047 0%, #2E7D32 100%);
+            box-shadow:
+                0 10px 25px rgba(46, 125, 50, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        /* Countdown Display */
+        .countdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.5s ease;
+        }
+
+        .countdown.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .time-box {
+            background:
+                linear-gradient(145deg, #D2691E 0%, #8B4513 100%);
+            border: 3px solid #6B4423;
+            border-radius: 8px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow:
+                0 8px 20px rgba(62, 39, 35, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2),
+                inset 0 -2px 5px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .time-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 0, 0, 0.03) 2px,
+                    rgba(0, 0, 0, 0.03) 4px);
+            pointer-events: none;
+        }
+
+        .time-box:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow:
+                0 15px 30px rgba(62, 39, 35, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3),
+                inset 0 -2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .time-box.seconds {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.03);
+            }
+        }
+
+        .time-box .number {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: #FFF8DC;
+            display: block;
+            margin-bottom: 10px;
+            line-height: 1;
+            text-shadow:
+                2px 2px 4px rgba(0, 0, 0, 0.3),
+                0 0 10px rgba(255, 248, 220, 0.2);
+            position: relative;
+            z-index: 1;
+        }
+
+        .time-box .label {
+            font-size: 0.9rem;
+            color: #FFDAB9;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Saved Timers Section */
+        .saved-timers-section {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 2px solid rgba(255, 223, 186, 0.3);
+        }
+
+        .saved-timers-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .saved-timers-header h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: #FFF8DC;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .saved-timers-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .saved-timer-card {
+            background: rgba(255, 248, 240, 0.95);
+            border: 2px solid #8B4513;
+            border-radius: 5px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            box-shadow:
+                0 4px 15px rgba(62, 39, 35, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .saved-timer-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(90deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(139, 69, 19, 0.03) 2px,
+                    rgba(139, 69, 19, 0.03) 4px);
+            pointer-events: none;
+        }
+
+        .saved-timer-card:hover {
+            transform: translateY(-5px);
+            box-shadow:
+                0 8px 25px rgba(62, 39, 35, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        }
+
+        .timer-card-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem;
+            color: #3E2723;
+            margin-bottom: 10px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timer-card-date {
+            font-size: 0.9rem;
+            color: #5D4037;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timer-card-actions {
+            display: flex;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timer-card-actions button {
+            flex: 1;
+            padding: 10px 15px;
+            font-size: 0.85rem;
+        }
+
+        .load-btn {
+            background: linear-gradient(135deg, #2E7D32 0%, #1B5E20 100%);
+            border-color: #1B5E20;
+        }
+
+        .load-btn:hover {
+            background: linear-gradient(135deg, #43A047 0%, #2E7D32 100%);
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, #DC143C 0%, #B22222 100%);
+            border-color: #8B0000;
+        }
+
+        .delete-btn:hover {
+            background: linear-gradient(135deg, #FF1744 0%, #DC143C 100%);
+        }
+
+        .no-timers {
+            text-align: center;
+            padding: 40px;
+            background: rgba(255, 248, 240, 0.5);
+            border-radius: 5px;
+            border: 2px dashed #8B4513;
+        }
+
+        .no-timers p {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.3rem;
+            color: #FFF8DC;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Completion Message */
+        .completion {
+            display: none;
+            text-align: center;
+            padding: 40px;
+            background:
+                linear-gradient(145deg, #D2691E 0%, #8B4513 100%);
+            border: 3px solid #6B4423;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            animation: bounceIn 0.8s ease;
+            box-shadow:
+                0 8px 20px rgba(62, 39, 35, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .completion.show {
+            display: block;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .completion h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3rem;
+            color: #FFF8DC;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .completion p {
+            font-size: 1.2rem;
+            color: #FFDAB9;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #D2691E;
+            position: absolute;
+            animation: confettiFall 3s linear;
+        }
+
+        @keyframes confettiFall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background:
+                linear-gradient(145deg, #D2691E 0%, #8B4513 100%);
+            border: 2px solid #6B4423;
+            border-radius: 3px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+            box-shadow:
+                0 4px 10px rgba(62, 39, 35, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg) scale(1.1);
+            box-shadow:
+                0 6px 15px rgba(62, 39, 35, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            fill: #FFF8DC;
+            filter: drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.3));
+        }
+
+        /* Light Mode */
+        body.light-mode .background {
+            background:
+                linear-gradient(90deg, rgba(139, 90, 43, 0.1) 1px, transparent 1px),
+                linear-gradient(rgba(139, 90, 43, 0.1) 1px, transparent 1px),
+                repeating-linear-gradient(0deg,
+                    #DEB887 0px,
+                    #F5DEB3 2px,
+                    #DEB887 4px,
+                    #D2B48C 6px,
+                    #DEB887 8px,
+                    #F5DEB3 10px,
+                    #DEB887 12px),
+                linear-gradient(90deg,
+                    #D2B48C 0%,
+                    #DEB887 20%,
+                    #F5DEB3 40%,
+                    #DEB887 60%,
+                    #D2B48C 80%,
+                    #C9A876 100%);
+        }
+
+        body.light-mode .main-heading h1,
+        body.light-mode .saved-timers-header h2 {
+            color: #3E2723;
+            text-shadow:
+                2px 2px 0px rgba(210, 180, 140, 0.5),
+                4px 4px 8px rgba(0, 0, 0, 0.2),
+                0 0 15px rgba(139, 69, 19, 0.2);
+        }
+
+        body.light-mode .time-box,
+        body.light-mode .completion,
+        body.light-mode .theme-toggle {
+            background: linear-gradient(145deg, #F5DEB3 0%, #DEB887 100%);
+            border-color: #8B7355;
+        }
+
+        body.light-mode .time-box .number,
+        body.light-mode .completion h2 {
+            color: #3E2723;
+        }
+
+        body.light-mode .time-box .label,
+        body.light-mode .completion p {
+            color: #5D4037;
+        }
+
+        body.light-mode button {
+            background: linear-gradient(135deg, #CD853F 0%, #DEB887 100%);
+            border-color: #8B7355;
+        }
+
+        body.light-mode .reset-btn,
+        body.light-mode .delete-btn {
+            background: linear-gradient(135deg, #FF6B6B 0%, #EE5A6F 100%);
+            border-color: #C92A2A;
+        }
+
+        body.light-mode .save-btn,
+        body.light-mode .load-btn {
+            background: linear-gradient(135deg, #51CF66 0%, #37B24D 100%);
+            border-color: #2F9E44;
+        }
+
+        body.light-mode .particle {
+            background: rgba(139, 69, 19, 0.3);
+        }
+
+        body.light-mode .no-timers p {
+            color: #3E2723;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .main-heading h1 {
+                font-size: 3rem;
+            }
+
+            .time-box .number {
+                font-size: 2.5rem;
+            }
+
+            .input-wrapper {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            input[type="datetime-local"],
+            button {
+                width: 100%;
+            }
+
+            .countdown {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .reset-btn,
+            .save-btn {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+
+            .saved-timers-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-heading h1 {
+                font-size: 2.5rem;
+            }
+
+            .time-box {
+                padding: 20px 10px;
+            }
+
+            .time-box .number {
+                font-size: 2rem;
+            }
+
+            .completion h2 {
+                font-size: 2rem;
+            }
+
+            .saved-timers-header h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Wooden Background -->
+    <div class="background"></div>
+    <div class="particles" id="particles"></div>
+
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" id="themeToggle">
+        <svg viewBox="0 0 24 24">
+            <path
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Main Heading -->
+        <div class="main-heading">
+            <h1>Wimer</h1>
+        </div>
+
+        <div class="title">
+            <input type="text" id="eventTitle" placeholder="Countdown to My Goal" maxlength="50">
+        </div>
+
+        <div class="input-section">
+            <div class="input-wrapper">
+                <input type="datetime-local" id="targetDate">
+                <button onclick="startCountdown()">Start Countdown</button>
+                <button class="save-btn" onclick="saveTimer()">Save Timer</button>
+                <button class="reset-btn" onclick="resetTimer()">Reset Timer</button>
+            </div>
+        </div>
+
+        <div class="completion" id="completion">
+            <h2>Time's Up! Yayy</h2>
+            <p id="completionMessage">Your countdown has ended!!!</p>
+        </div>
+
+        <div class="countdown" id="countdown">
+            <div class="time-box days">
+                <span class="number" id="days">00</span>
+                <span class="label">Days</span>
+            </div>
+            <div class="time-box hours">
+                <span class="number" id="hours">00</span>
+                <span class="label">Hours</span>
+            </div>
+            <div class="time-box minutes">
+                <span class="number" id="minutes">00</span>
+                <span class="label">Minutes</span>
+            </div>
+            <div class="time-box seconds">
+                <span class="number" id="seconds">00</span>
+                <span class="label">Seconds</span>
+            </div>
+        </div>
+
+        <!-- Saved Timers Section -->
+        <div class="saved-timers-section">
+            <div class="saved-timers-header">
+                <h2>Saved Timers</h2>
+            </div>
+            <div class="saved-timers-list" id="savedTimersList">
+                <div class="no-timers">
+                    <p>No saved timers yet. Create and save your first timer :3 </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let countdownInterval;
+        let targetDateTime;
+        let startDateTime;
+        let savedTimers = [];
+
+        // Create floating particals
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 40; i++) {
+                let particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Load saved data
+        function loadSavedData() {
+            let savedDate = localStorage.getItem('targetDate');
+            const savedTitle = localStorage.getItem('eventTitle');
+            let savedStartDate = localStorage.getItem('startDate');
+
+            if (savedTitle) {
+                document.getElementById('eventTitle').value = savedTitle;
+            }
+
+            if (savedDate) {
+                document.getElementById('targetDate').value = savedDate;
+                startDateTime = savedStartDate ? new Date(savedStartDate) : new Date();
+                startCountdown();
+            }
+
+            // load saved timers
+            loadSavedTimers();
+        }
+
+        // Start countdown
+        function startCountdown() {
+            let dateInput = document.getElementById('targetDate').value;
+            const eventTitle = document.getElementById('eventTitle').value || 'Countdown to My Goal';
+
+            if (!dateInput) {
+                alert('Please select a date and time!');
+                return;
+            }
+
+            targetDateTime = new Date(dateInput).getTime();
+            startDateTime = startDateTime || new Date();
+
+            // Save to localStorage
+            localStorage.setItem('targetDate', dateInput);
+            localStorage.setItem('eventTitle', eventTitle);
+            localStorage.setItem('startDate', startDateTime);
+
+            // Clear existing intrval
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+
+            // Show countdown
+            document.getElementById('countdown').classList.add('active');
+            document.getElementById('completion').classList.remove('show');
+
+            // Update immediatly
+            updateCountdown();
+
+            // Update every second
+            countdownInterval = setInterval(updateCountdown, 1000);
+        }
+
+        // Update countdown
+        function updateCountdown() {
+            const now = new Date().getTime();
+            let distance = targetDateTime - now;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                showCompletion();
+                return;
+            }
+
+            // Calulate time units
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Update display
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        // Show completion
+        function showCompletion() {
+            let eventTitle = document.getElementById('eventTitle').value || 'Your countdown';
+            document.getElementById('completionMessage').textContent = `${eventTitle} has ended!`;
+            document.getElementById('completion').classList.add('show');
+            document.getElementById('countdown').classList.remove('active');
+
+            // Clear localStorage
+            localStorage.removeItem('targetDate');
+            localStorage.removeItem('startDate');
+
+            // Trigger confetti
+            createConfetti();
+        }
+
+        // Reset Timer Function
+        function resetTimer() {
+            // Clear interval
+            if (countdownInterval) {
+                clearInterval(countdownInterval);
+            }
+
+            // Clear all displays
+            document.getElementById('days').textContent = '00';
+            document.getElementById('hours').textContent = '00';
+            document.getElementById('minutes').textContent = '00';
+            document.getElementById('seconds').textContent = '00';
+
+            // Hide countdown and completion
+            document.getElementById('countdown').classList.remove('active');
+            document.getElementById('completion').classList.remove('show');
+
+            // Clear inputs
+            document.getElementById('targetDate').value = '';
+            document.getElementById('eventTitle').value = '';
+
+            // Clear localStorage
+            localStorage.removeItem('targetDate');
+            localStorage.removeItem('eventTitle');
+            localStorage.removeItem('startDate');
+
+            // Reset variabels
+            targetDateTime = null;
+            startDateTime = null;
+
+            // Show sucess message
+            alert('Timer has been reset!');
+        }
+
+        // Save Timer Funtion
+        function saveTimer() {
+            let dateInput = document.getElementById('targetDate').value;
+            const eventTitle = document.getElementById('eventTitle').value || 'Unnamed Timer';
+
+            if (!dateInput) {
+                alert('Please set a date and time before saving!');
+                return;
+            }
+
+            // Create timer object
+            let timer = {
+                id: Date.now(),
+                title: eventTitle,
+                targetDate: dateInput,
+                createdAt: new Date().toISOString()
+            };
+
+            // Add to saved timers
+            savedTimers.push(timer);
+
+            // Save to localStorage
+            localStorage.setItem('savedTimers', JSON.stringify(savedTimers));
+
+            // Refresh display
+            displaySavedTimers();
+
+            // Show confirmaton
+            alert(`Timer "${eventTitle}" saved succesfully!`);
+        }
+
+        // Load Saved Timers
+        function loadSavedTimers() {
+            const saved = localStorage.getItem('savedTimers');
+            if (saved) {
+                savedTimers = JSON.parse(saved);
+                displaySavedTimers();
+            }
+        }
+
+        // Display Saved Timers
+        function displaySavedTimers() {
+            let container = document.getElementById('savedTimersList');
+
+            if (!savedTimers.length) {
+                container.innerHTML = `
+                    <div class="no-timers">
+                        <p>No saved timers yet. Create and save your first timer!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = savedTimers.map(timer => {
+                const targetDate = new Date(timer.targetDate);
+                let formattedDate = targetDate.toLocaleString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                return `
+                    <div class="saved-timer-card">
+                        <div class="timer-card-title">${timer.title}</div>
+                        <div class="timer-card-date">${formattedDate}</div>
+                        <div class="timer-card-actions">
+                            <button class="load-btn" onclick="loadTimer(${timer.id})">Load</button>
+                            <button class="delete-btn" onclick="deleteTimer(${timer.id})">Delete</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Load Timer
+        function loadTimer(timerId) {
+            let timer = savedTimers.find(t => t.id === timerId);
+            if (!timer) return;
+
+            // Set form values
+            document.getElementById('eventTitle').value = timer.title;
+            document.getElementById('targetDate').value = timer.targetDate;
+
+            // Start countdown
+            startCountdown();
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Show confirmaton
+            alert(`Timer "${timer.title}" loaded!`);
+        }
+
+        // Delete Timer
+        function deleteTimer(timerId) {
+            const timer = savedTimers.find(t => t.id === timerId);
+            if (!timer) return;
+
+            if (confirm(`Delete timer "${timer.title}"?`)) {
+                // Remove from aray
+                savedTimers = savedTimers.filter(t => t.id !== timerId);
+
+                // Update localStorage
+                localStorage.setItem('savedTimers', JSON.stringify(savedTimers));
+
+                // Refresh display
+                displaySavedTimers();
+
+                // Show confirmaton
+                alert('Timer deleted!');
+            }
+        }
+
+        // Create confetti
+        function createConfetti() {
+            const colors = ['#8B4513', '#D2691E', '#CD853F', '#DEB887', '#F4A460'];
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    let confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-10px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+        }
+
+        // Theme togle
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            let isLight = document.body.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+
+        // Load theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-mode');
+        }
+
+        // Set minimun date to now
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        document.getElementById('targetDate').min = now.toISOString().slice(0, 16);
+
+        // Initalize
+        createParticles();
+        loadSavedData();
+
+        // Update title on input
+        document.getElementById('eventTitle').addEventListener('input', (e) => {
+            if (countdownInterval) {
+                localStorage.setItem('eventTitle', e.target.value);
+            }
+        });
+    </script>
+</body>
+
+</html>
